@@ -1,0 +1,2617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My AI Portfolio — Projects & Prompt Library</title>
+<meta name="description" content="AI-powered web projects and prompt library by a creative builder.">
+<style>
+@font-face {
+  font-family: 'Trade Winds';
+  src: url('https://fonts.gstatic.com/s/tradewinds/v16/AYCPpXPpYNIIT7h8-QenM3Jq7PKP5Z_G.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('https://fonts.gstatic.com/s/dmsans/v14/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAkJxhTmf3ZGMZpg.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'DM Mono';
+  src: url('https://fonts.gstatic.com/s/dmmono/v14/aFTR7PB1QTsUX8KYvrumB_LEbmM.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+</style>
+
+<style>
+/* ============================================
+   DESIGN SYSTEM
+============================================ */
+:root {
+  --black: #080810;
+  --dark: #0f0f1a;
+  --card: #14141f;
+  --card2: #1a1a28;
+  --border: #252535;
+  --border2: #303048;
+  --lime: #c8f135;
+  --lime-dim: rgba(200,241,53,0.12);
+  --blue: #4d9fff;
+  --pink: #ff4d8f;
+  --orange: #ff8c42;
+  --teal: #00d4aa;
+  --text: #f0f0f8;
+  --muted: #7070a0;
+  --muted2: #505070;
+  --font-display: 'Trade Winds', cursive;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Custom cursor */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--lime);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s, opacity 0.3s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--lime);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.12s ease;
+  opacity: 0.5;
+}
+
+/* Noise texture overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.4;
+}
+
+/* ============================================
+   NAVIGATION
+============================================ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(8,8,16,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 3px;
+  color: var(--lime);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: var(--text);
+  background: var(--card2);
+}
+
+.nav-cta {
+  background: var(--lime) !important;
+  color: var(--black) !important;
+  font-weight: 600 !important;
+}
+
+.nav-cta:hover {
+  background: #d4f840 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(200,241,53,0.3);
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* ============================================
+   HERO
+============================================ */
+#home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 40px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 10% 50%, rgba(200,241,53,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 70% at 90% 30%, rgba(77,159,255,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 50% 90%, rgba(255,77,143,0.04) 0%, transparent 70%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.3;
+  mask-image: radial-gradient(ellipse 80% 80% at center, black, transparent);
+}
+
+.hero-content {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--lime-dim);
+  border: 1px solid rgba(200,241,53,0.2);
+  color: var(--lime);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 30px;
+  margin-bottom: 30px;
+  animation: fadeInUp 0.8s ease both;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--lime);
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%,100% { opacity:1; }
+  50% { opacity:0.3; }
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 1.05;
+  letter-spacing: 4px;
+  margin-bottom: 30px;
+  animation: fadeInUp 0.8s 0.1s ease both;
+}
+
+.hero-title .line1 { color: var(--text); display: block; }
+.hero-title .line2 {
+  display: block;
+  background: linear-gradient(90deg, var(--lime) 0%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  animation: fadeInUp 0.8s 0.2s ease both;
+}
+
+.hero-sub span { color: var(--text); font-weight: 500; }
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.8s 0.3s ease both;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s;
+  border: none;
+}
+
+.btn-lime {
+  background: var(--lime);
+  color: var(--black);
+}
+.btn-lime:hover {
+  background: #d4f840;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(200,241,53,0.35);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border2);
+}
+.btn-ghost:hover {
+  border-color: var(--lime);
+  color: var(--lime);
+  transform: translateY(-2px);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  animation: fadeInUp 0.8s 0.4s ease both;
+}
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  color: var(--lime);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* ============================================
+   SECTION COMMONS
+============================================ */
+section {
+  padding: 100px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--lime);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-tag::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--lime);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: 3px;
+  margin-bottom: 16px;
+}
+
+.section-sub {
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 60px;
+}
+
+/* ============================================
+   PROJECTS SECTION
+============================================ */
+#projects { padding-top: 80px; }
+
+.projects-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+  border-color: var(--lime);
+  color: var(--lime);
+  background: var(--lime-dim);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.project-card:hover {
+  border-color: var(--lime);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,241,53,0.1);
+}
+
+.project-thumb {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, var(--card) 100%);
+}
+
+.project-body { padding: 24px; }
+
+.project-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+}
+
+.tag-ai { background: rgba(200,241,53,0.1); color: var(--lime); border: 1px solid rgba(200,241,53,0.2); }
+.tag-tool { background: rgba(77,159,255,0.1); color: var(--blue); border: 1px solid rgba(77,159,255,0.2); }
+.tag-design { background: rgba(255,77,143,0.1); color: var(--pink); border: 1px solid rgba(255,77,143,0.2); }
+.tag-utility { background: rgba(255,140,66,0.1); color: var(--orange); border: 1px solid rgba(255,140,66,0.2); }
+
+.project-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.project-desc {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.project-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-sm {
+  padding: 9px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-family: var(--font-body);
+}
+
+.btn-launch {
+  background: var(--lime);
+  color: var(--black);
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-launch:hover {
+  background: #d4f840;
+  transform: translateY(-1px);
+}
+
+.btn-details {
+  background: var(--card2);
+  color: var(--text);
+  border: 1px solid var(--border2);
+}
+
+.btn-details:hover {
+  border-color: var(--lime);
+  color: var(--lime);
+}
+
+/* ============================================
+   PROJECT MODAL
+============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,16,0.92);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  max-width: 760px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(30px) scale(0.97);
+  transition: all 0.3s;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+
+.modal-overlay.active .modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  padding: 30px 30px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.modal-close {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.modal-close:hover { border-color: var(--pink); color: var(--pink); }
+
+.modal-body { padding: 20px 30px 30px; }
+
+.modal-thumb {
+  height: 180px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+
+.modal-subtitle { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+
+.modal-section-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin: 24px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.how-to-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--lime-dim);
+  border: 1px solid rgba(200,241,53,0.2);
+  color: var(--lime);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+}
+
+.step-text { color: var(--text); font-size: 14px; line-height: 1.6; }
+.step-text strong { color: var(--lime); }
+
+.tech-stack {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tech-pill {
+  padding: 6px 14px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+/* ============================================
+   PROMPT LIBRARY
+============================================ */
+#prompts {
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+
+#prompts::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--lime), transparent);
+}
+
+.prompt-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 15px;
+}
+
+#prompt-search {
+  width: 100%;
+  padding: 12px 14px 12px 40px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#prompt-search:focus { border-color: var(--lime); }
+#prompt-search::placeholder { color: var(--muted2); }
+
+.cat-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.prompts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.prompt-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.prompt-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--pc-color, var(--lime));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+  transform-origin: left;
+}
+
+.prompt-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.prompt-card:hover::before { transform: scaleX(1); }
+
+.prompt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.prompt-icon { font-size: 1.6rem; }
+
+.prompt-cat {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.prompt-name {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.prompt-desc {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.prompt-text-box {
+  background: var(--dark);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--blue);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  max-height: 100px;
+  overflow: hidden;
+  position: relative;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.prompt-text-box::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(transparent, var(--dark));
+}
+
+.prompt-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prompt-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.meta-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--card2);
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+.copy-btn {
+  padding: 8px 14px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.copy-btn:hover { border-color: var(--lime); color: var(--lime); }
+.copy-btn.copied { border-color: var(--teal); color: var(--teal); background: rgba(0,212,170,0.08); }
+
+/* ============================================
+   ABOUT / CONTACT
+============================================ */
+#about {
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.about-text .section-sub { margin-bottom: 30px; }
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.skill-item {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+
+.skill-item:hover { border-color: var(--lime); color: var(--lime); }
+
+.contact-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px;
+}
+
+.contact-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+
+.contact-sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--dark);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.contact-link:hover {
+  border-color: var(--lime);
+  color: var(--lime);
+  transform: translateX(4px);
+}
+
+.contact-link-icon { font-size: 1.2rem; }
+
+/* ============================================
+   FOOTER
+============================================ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--lime);
+  letter-spacing: 3px;
+}
+
+.footer-text { color: var(--muted2); font-size: 12px; }
+
+/* ============================================
+   ANIMATIONS
+============================================ */
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(24px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 65px; left: 0; right: 0;
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+    padding: 20px;
+    gap: 4px;
+  }
+  .nav-links.open a { padding: 12px 16px; border-radius: 8px; }
+  .hamburger { display: flex; }
+
+  #home { padding: 100px 20px 60px; }
+  .hero-stats { gap: 24px; flex-wrap: wrap; }
+  section { padding: 60px 20px; }
+  #about { grid-template-columns: 1fr; gap: 40px; }
+  .projects-grid, .prompts-grid { grid-template-columns: 1fr; }
+  footer { justify-content: center; text-align: center; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+}
+
+/* Admin footer button */
+.admin-footer-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted2);
+  cursor: pointer;
+  transition: all .2s;
+}
+.admin-footer-btn:hover { border-color: var(--lime); color: var(--lime); }
+
+/* ============================================
+   ADMIN PANEL STYLES
+============================================ */
+.admin-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(4,4,10,0.97);
+  backdrop-filter: blur(20px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+  overflow-y: auto;
+}
+.admin-overlay.open { opacity: 1; pointer-events: all; }
+
+.admin-wrap {
+  max-width: 1000px; margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* Admin Login */
+.admin-login {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+}
+.login-box {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 50px 44px;
+  width: 100%; max-width: 400px;
+  text-align: center;
+}
+.login-logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem; letter-spacing: 4px;
+  color: var(--lime); margin-bottom: 6px;
+}
+.login-sub {
+  font-size: 12px; color: var(--muted);
+  letter-spacing: 2px; margin-bottom: 32px;
+  font-family: var(--font-mono);
+}
+.login-input {
+  width: 100%; padding: 14px 16px;
+  background: var(--dark); border: 1px solid var(--border);
+  border-radius: 10px; color: var(--text);
+  font-size: 14px; text-align: center;
+  letter-spacing: 4px; outline: none;
+  transition: border-color .2s; margin-bottom: 14px;
+  font-family: var(--font-mono);
+}
+.login-input:focus { border-color: var(--lime); }
+.login-btn {
+  width: 100%; padding: 14px;
+  background: var(--lime); color: var(--black);
+  border: none; border-radius: 10px;
+  font-family: var(--font-display); font-size: 1rem;
+  letter-spacing: 3px; cursor: pointer;
+  transition: all .25s;
+}
+.login-btn:hover { background: #d4f840; transform: translateY(-2px); }
+.login-err {
+  color: var(--pink); font-size: 12px;
+  margin-top: 12px; display: none;
+  font-family: var(--font-mono);
+}
+
+/* Admin header */
+.admin-header {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 36px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.admin-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem; letter-spacing: 3px;
+  color: var(--lime);
+}
+.admin-close-btn {
+  padding: 10px 20px;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: transparent; color: var(--muted);
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 1px; cursor: pointer;
+  transition: all .2s;
+}
+.admin-close-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+/* Admin tabs */
+.admin-tabs {
+  display: flex; gap: 4px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 4px;
+  margin-bottom: 30px;
+}
+.admin-tab {
+  flex: 1; padding: 10px 16px;
+  border: none; background: transparent;
+  color: var(--muted); font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 2px;
+  cursor: pointer; border-radius: 9px;
+  transition: all .2s; text-transform: uppercase;
+}
+.admin-tab.active {
+  background: var(--lime); color: var(--black);
+  box-shadow: 0 0 20px rgba(200,241,53,0.3);
+}
+
+/* Admin cards list */
+.admin-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+
+.admin-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+  display: flex; align-items: center;
+  gap: 16px; transition: border-color .2s;
+}
+.admin-item:hover { border-color: var(--border2); }
+
+.admin-item-icon { font-size: 1.8rem; flex-shrink: 0; }
+.admin-item-info { flex: 1; }
+.admin-item-name {
+  font-family: var(--font-display);
+  font-size: 1rem; letter-spacing: 2px;
+  color: var(--text); margin-bottom: 4px;
+}
+.admin-item-desc {
+  font-size: 12px; color: var(--muted); line-height: 1.5;
+}
+
+.admin-item-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.btn-edit, .btn-del {
+  padding: 7px 14px; border-radius: 7px;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 1px; cursor: pointer;
+  transition: all .2s; border: 1px solid;
+}
+.btn-edit {
+  background: transparent; border-color: var(--blue); color: var(--blue);
+}
+.btn-edit:hover { background: rgba(77,159,255,0.1); }
+.btn-del {
+  background: transparent; border-color: var(--pink); color: var(--pink);
+}
+.btn-del:hover { background: rgba(255,77,143,0.1); }
+
+/* Add new button */
+.btn-add-new {
+  width: 100%; padding: 16px;
+  border: 2px dashed var(--border2);
+  border-radius: 12px; background: transparent;
+  color: var(--lime); font-family: var(--font-mono);
+  font-size: 12px; letter-spacing: 2px;
+  cursor: pointer; transition: all .25s;
+  text-transform: uppercase;
+}
+.btn-add-new:hover {
+  border-color: var(--lime);
+  background: var(--lime-dim);
+}
+
+/* Form modal */
+.form-overlay {
+  position: fixed; inset: 0; z-index: 9500;
+  background: rgba(4,4,10,0.9);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.form-overlay.open { opacity: 1; pointer-events: all; }
+
+.form-box {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 36px;
+  width: 100%; max-width: 620px;
+  max-height: 90vh; overflow-y: auto;
+  transform: translateY(20px) scale(0.98);
+  transition: all .3s;
+  scrollbar-width: thin;
+}
+.form-overlay.open .form-box {
+  transform: translateY(0) scale(1);
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem; letter-spacing: 3px;
+  color: var(--lime); margin-bottom: 24px;
+}
+
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 2px; color: var(--muted);
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%; padding: 12px 14px;
+  background: var(--dark); border: 1px solid var(--border);
+  border-radius: 9px; color: var(--text);
+  font-family: var(--font-mono); font-size: 13px;
+  outline: none; transition: border-color .2s;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--lime);
+}
+.form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+.form-select { cursor: pointer; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.form-actions {
+  display: flex; gap: 12px; margin-top: 24px;
+  padding-top: 20px; border-top: 1px solid var(--border);
+}
+.btn-save {
+  flex: 1; padding: 14px;
+  background: var(--lime); color: var(--black);
+  border: none; border-radius: 10px;
+  font-family: var(--font-display); font-size: 1rem;
+  letter-spacing: 2px; cursor: pointer;
+  transition: all .25s;
+}
+.btn-save:hover { background: #d4f840; transform: translateY(-1px); }
+.btn-cancel {
+  padding: 14px 24px;
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 2px; cursor: pointer;
+  transition: all .2s;
+}
+.btn-cancel:hover { border-color: var(--text); color: var(--text); }
+
+/* Image upload */
+.img-upload-area {
+  border: 2px dashed var(--border2);
+  border-radius: 10px; padding: 24px;
+  text-align: center; cursor: pointer;
+  transition: all .2s; position: relative;
+  overflow: hidden;
+}
+.img-upload-area:hover { border-color: var(--lime); background: var(--lime-dim); }
+.img-upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.img-preview {
+  width: 100%; height: 120px; object-fit: cover;
+  border-radius: 8px; margin-top: 10px; display: none;
+}
+
+/* Confirm delete modal */
+.confirm-overlay {
+  position: fixed; inset: 0; z-index: 9600;
+  background: rgba(4,4,10,0.95);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.confirm-overlay.open { opacity: 1; pointer-events: all; }
+.confirm-box {
+  background: var(--card);
+  border: 1px solid var(--pink);
+  border-radius: 16px; padding: 36px;
+  max-width: 400px; width: 100%;
+  text-align: center;
+  transform: scale(0.95); transition: transform .3s;
+}
+.confirm-overlay.open .confirm-box { transform: scale(1); }
+.confirm-icon { font-size: 3rem; margin-bottom: 16px; }
+.confirm-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem; letter-spacing: 2px;
+  color: var(--pink); margin-bottom: 10px;
+}
+.confirm-msg { color: var(--muted); font-size: 14px; margin-bottom: 28px; line-height: 1.6; }
+.confirm-btns { display: flex; gap: 12px; }
+.btn-confirm-del {
+  flex: 1; padding: 13px;
+  background: var(--pink); color: white;
+  border: none; border-radius: 9px;
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 2px; cursor: pointer;
+  transition: all .2s;
+}
+.btn-confirm-del:hover { background: #e0356e; }
+.btn-confirm-cancel {
+  flex: 1; padding: 13px;
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 9px;
+  font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: 2px; cursor: pointer;
+  transition: all .2s;
+}
+.btn-confirm-cancel:hover { border-color: var(--text); color: var(--text); }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--card); border: 1px solid var(--lime);
+  border-radius: 10px; padding: 12px 24px;
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: 1px; color: var(--lime);
+  z-index: 9999; transition: transform .3s;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+@media(max-width:600px) {
+  .admin-wrap { padding: 24px 14px 60px; }
+  .form-box { padding: 24px 18px; }
+  .form-row { grid-template-columns: 1fr; }
+  .admin-item { flex-wrap: wrap; }
+  .login-box { padding: 36px 24px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">PORTFOLIO</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#prompts">Prompt Library</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#about" class="nav-cta">Hire Me</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⚡ AI-Powered Builder</div>
+    <h1 class="hero-title">
+      <span class="line1">CREATIVE</span>
+      <span class="line2">PORTFOLIO</span>
+    </h1>
+    <p class="hero-sub">
+      I build <span>AI-powered tools, websites & prompts</span> that solve real problems. Explore my projects and prompt library below.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-lime">🚀 View Projects</a>
+      <a href="#prompts" class="btn btn-ghost">📚 Prompt Library</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num" id="countProjects">0</div>
+        <div class="stat-label">Projects Built</div>
+      </div>
+      <div>
+        <div class="stat-num" id="countPrompts">0</div>
+        <div class="stat-label">Prompts Created</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">AI-Assisted</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+  <div class="reveal">
+    <div class="section-tag">My Work</div>
+    <h2 class="section-title">FEATURED<br>PROJECTS</h2>
+    <p class="section-sub">Each project is built with AI assistance and designed to solve a specific problem. Click any card to learn how to use it.</p>
+  </div>
+
+  <div class="projects-filter reveal">
+    <button class="filter-btn active" onclick="filterProjects('all', this)">All Projects</button>
+    <button class="filter-btn" onclick="filterProjects('ai', this)">🤖 AI Tools</button>
+    <button class="filter-btn" onclick="filterProjects('tool', this)">🔧 Utilities</button>
+    <button class="filter-btn" onclick="filterProjects('design', this)">🎨 Design</button>
+  </div>
+
+  <div class="projects-grid reveal" id="projectsGrid"></div>
+</section>
+
+<!-- ===== PROMPT LIBRARY ===== -->
+<section id="prompts">
+  <div class="reveal">
+    <div class="section-tag">Prompt Library</div>
+    <h2 class="section-title">MY BEST<br>PROMPTS</h2>
+    <p class="section-sub">Carefully crafted prompts for Claude, ChatGPT and other AI models. Copy and use instantly.</p>
+  </div>
+
+  <div class="prompt-controls reveal">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="prompt-search" placeholder="Search prompts..." oninput="searchPrompts()">
+    </div>
+    <div class="cat-filters">
+      <button class="filter-btn active" onclick="filterPrompts('all', this)">All</button>
+      <button class="filter-btn" onclick="filterPrompts('creative', this)">✍️ Creative</button>
+      <button class="filter-btn" onclick="filterPrompts('technical', this)">💻 Technical</button>
+      <button class="filter-btn" onclick="filterPrompts('business', this)">📈 Business</button>
+      <button class="filter-btn" onclick="filterPrompts('analysis', this)">🔍 Analysis</button>
+    </div>
+  </div>
+
+  <div class="prompts-grid reveal" id="promptsGrid"></div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="about-text reveal">
+    <div class="section-tag">About Me</div>
+    <h2 class="section-title">BUILDER.<br>CREATOR.</h2>
+    <p class="section-sub">
+      I'm a self-taught AI builder who uses Claude and other AI tools to create functional, beautiful web experiences — no traditional coding background needed.
+    </p>
+    <p style="color:var(--muted); font-size:14px; line-height:1.8; margin-bottom:16px;">
+      What I lack in formal training, I make up for in curiosity, creativity and the ability to leverage AI tools effectively. Every project in this portfolio was built using AI assistance.
+    </p>
+    <div class="skills-list">
+      <span class="skill-item">Claude AI</span>
+      <span class="skill-item">Prompt Engineering</span>
+      <span class="skill-item">HTML/CSS</span>
+      <span class="skill-item">JavaScript</span>
+      <span class="skill-item">UI Design</span>
+      <span class="skill-item">Netlify</span>
+      <span class="skill-item">GitHub</span>
+      <span class="skill-item">AI Tools</span>
+    </div>
+  </div>
+
+  <div class="contact-card reveal">
+    <div class="contact-title">LET'S CONNECT</div>
+    <p class="contact-sub">Open for collaborations, feedback, or just a conversation about AI.</p>
+    <div class="contact-links">
+      <a href="/cdn-cgi/l/email-protection#b7ced8c2c5f7d2dad6dedb99d4d8da" class="contact-link">
+        <span class="contact-link-icon">📧</span>
+        <div>
+          <div style="font-weight:600; font-size:13px;">Email Me</div>
+          <div style="color:var(--muted); font-size:12px;"><span class="__cf_email__" data-cfemail="fb82948e89bb9e969a9297d5989496">[email&#160;protected]</span></div>
+        </div>
+      </a>
+      <a href="https://github.com/yourusername" target="_blank" class="contact-link">
+        <span class="contact-link-icon">🐙</span>
+        <div>
+          <div style="font-weight:600; font-size:13px;">GitHub</div>
+          <div style="color:var(--muted); font-size:12px;">@yourusername</div>
+        </div>
+      </a>
+      <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-link">
+        <span class="contact-link-icon">💼</span>
+        <div>
+          <div style="font-weight:600; font-size:13px;">LinkedIn</div>
+          <div style="color:var(--muted); font-size:12px;">Connect professionally</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">PORTFOLIO</div>
+  <div style="text-align:center;line-height:2;">
+    <div class="footer-text">Design &amp; Developed by <span style="color:var(--lime);font-weight:600;">Love</span> 🤍</div>
+    <div class="footer-text" style="font-style:italic;color:var(--muted);">For You .</div>
+    <div class="footer-text" style="color:var(--lime);letter-spacing:3px;font-weight:700;">I Am The Best.</div>
+  </div>
+  <button onclick="openAdmin()" class="admin-footer-btn">⚙ ADMIN</button>
+</footer>
+
+<!-- ===== PROJECT MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="project-tags" id="modalTags"></div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-thumb" id="modalThumb"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-subtitle" id="modalSubtitle"></div>
+
+      <div class="modal-section-title">📖 How To Use</div>
+      <div class="how-to-steps" id="modalSteps"></div>
+
+      <div class="modal-section-title">🔧 Tech Stack</div>
+      <div class="tech-stack" id="modalTech"></div>
+
+      <div class="modal-section-title">👥 Target Audience</div>
+      <p id="modalAudience" style="color:var(--muted); font-size:14px; line-height:1.7;"></p>
+
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ============================================
+//  DATA — Edit these to add your real projects!
+// ============================================
+
+const PROJECTS = [
+  {
+    id: 1,
+    name: "PromptForge",
+    desc: "AI-powered tool to improve, generate and analyze prompts for Claude and ChatGPT. Get 10x better results instantly.",
+    emoji: "⚡",
+    bg: "linear-gradient(135deg, #1a1a0a 0%, #0a0a1a 100%)",
+    tags: ["ai", "tool"],
+    tagLabels: [
+      { text: "AI Tool", cls: "tag-ai" },
+      { text: "Utility", cls: "tag-tool" }
+    ],
+    liveUrl: "#", // 👈 Replace with your real URL
+    githubUrl: "#",
+    audience: "Content creators, developers, marketers and anyone who uses AI tools daily and wants dramatically better results from their prompts.",
+    tech: ["HTML", "CSS", "JavaScript", "Claude API"],
+    steps: [
+      { title: "Open the Tool", detail: "Click <strong>Launch Project</strong> to open PromptForge in a new tab." },
+      { title: "Choose a Tab", detail: "Select from <strong>Improve Prompt</strong>, <strong>Generate Prompt</strong>, <strong>Analyze</strong>, or <strong>Techniques</strong>." },
+      { title: "Enter Your Prompt", detail: "Paste your existing prompt or describe what you need in the text area." },
+      { title: "Select Options", detail: "Choose your preferred <strong>style</strong> (Detailed, Concise, Creative) and <strong>use case</strong>." },
+      { title: "Get Results", detail: "Click the action button and receive your <strong>improved, AI-optimized prompt</strong> instantly." },
+      { title: "Copy & Use", detail: "Hit the <strong>Copy</strong> button and paste your improved prompt directly into Claude or ChatGPT." }
+    ]
+  },
+  {
+    id: 2,
+    name: "Project Two",
+    desc: "Describe your second project here. What does it do? What problem does it solve? Make it compelling!",
+    emoji: "🎨",
+    bg: "linear-gradient(135deg, #0a1a10 0%, #0a0a1a 100%)",
+    tags: ["design"],
+    tagLabels: [
+      { text: "Design", cls: "tag-design" }
+    ],
+    liveUrl: "#",
+    githubUrl: "#",
+    audience: "Describe who this is for — designers, businesses, students, etc.",
+    tech: ["HTML", "CSS", "JavaScript"],
+    steps: [
+      { title: "Step One", detail: "Describe the first step to use your project." },
+      { title: "Step Two", detail: "Describe the second step." },
+      { title: "Step Three", detail: "Describe the third step and expected result." }
+    ]
+  },
+  {
+    id: 3,
+    name: "Project Three",
+    desc: "Add your third project here. Replace this placeholder with your real project description.",
+    emoji: "📊",
+    bg: "linear-gradient(135deg, #1a0a0a 0%, #0a1020 100%)",
+    tags: ["tool"],
+    tagLabels: [
+      { text: "Utility", cls: "tag-utility" }
+    ],
+    liveUrl: "#",
+    githubUrl: "#",
+    audience: "Your target users for project three.",
+    tech: ["HTML", "CSS", "JavaScript"],
+    steps: [
+      { title: "Step One", detail: "First step description." },
+      { title: "Step Two", detail: "Second step description." }
+    ]
+  }
+];
+
+// ============================================
+//  PROMPTS DATA — Add your real prompts here!
+// ============================================
+
+const PROMPTS = [
+  {
+    id: 1,
+    name: "Ultimate Content Writer",
+    icon: "✍️",
+    category: "creative",
+    catLabel: "Creative",
+    catColor: "rgba(255,77,143,0.15)",
+    catTextColor: "#ff4d8f",
+    accentColor: "#ff4d8f",
+    desc: "Generates high-quality blog posts, articles and social content with perfect structure.",
+    prompt: `You are an expert content writer with 15 years of experience. Write a [TYPE] about [TOPIC] for [AUDIENCE].
+
+Requirements:
+- Hook the reader in the first sentence
+- Use clear, simple language
+- Include 3-5 actionable takeaways
+- End with a compelling CTA
+- Tone: [PROFESSIONAL/CASUAL/INSPIRATIONAL]
+- Length: [WORD COUNT]`,
+    tags: ["Claude", "ChatGPT", "GPT-4"],
+    models: "Claude · ChatGPT"
+  },
+  {
+    id: 2,
+    name: "Code Debugger Pro",
+    icon: "🐛",
+    category: "technical",
+    catLabel: "Technical",
+    catColor: "rgba(77,159,255,0.15)",
+    catTextColor: "#4d9fff",
+    accentColor: "#4d9fff",
+    desc: "Systematically finds and fixes bugs in any programming language with detailed explanation.",
+    prompt: `You are a senior software engineer and debugging expert. Analyze this code:
+
+[PASTE YOUR CODE HERE]
+
+Please:
+1. Identify ALL bugs and errors
+2. Explain WHY each bug exists
+3. Provide the FIXED code
+4. Add comments explaining the fixes
+5. Suggest performance improvements
+
+Language: [LANGUAGE]
+Expected behavior: [WHAT IT SHOULD DO]`,
+    tags: ["Claude", "GPT-4"],
+    models: "Claude · GPT-4"
+  },
+  {
+    id: 3,
+    name: "Business Plan Generator",
+    icon: "📈",
+    category: "business",
+    catLabel: "Business",
+    catColor: "rgba(200,241,53,0.15)",
+    catTextColor: "#c8f135",
+    accentColor: "#c8f135",
+    desc: "Creates comprehensive business plans with market analysis, financials and strategy.",
+    prompt: `Act as a seasoned business consultant and startup advisor. Create a comprehensive business plan for:
+
+Business Idea: [YOUR IDEA]
+Target Market: [MARKET]
+Budget: [BUDGET]
+Location: [LOCATION/ONLINE]
+
+Include:
+- Executive Summary
+- Problem & Solution
+- Target Audience & Market Size
+- Revenue Model (3 streams minimum)
+- Competitive Analysis
+- 12-Month Roadmap
+- Key Risks & Mitigation`,
+    tags: ["Claude", "ChatGPT"],
+    models: "Claude · ChatGPT"
+  },
+  {
+    id: 4,
+    name: "Deep Research Analyst",
+    icon: "🔍",
+    category: "analysis",
+    catLabel: "Analysis",
+    catColor: "rgba(0,212,170,0.15)",
+    catTextColor: "#00d4aa",
+    accentColor: "#00d4aa",
+    desc: "Breaks down complex topics with structured analysis, pros/cons and evidence-based conclusions.",
+    prompt: `You are a research analyst with expertise in [FIELD]. Conduct a deep analysis of:
+
+Topic: [YOUR TOPIC]
+
+Structure your analysis as:
+1. OVERVIEW — What is it? (3-4 sentences)
+2. KEY FINDINGS — Top 5 most important facts
+3. PROS & CONS — Balanced view (5 each)
+4. EVIDENCE — Data and sources supporting conclusions
+5. COUNTER-ARGUMENTS — What critics say
+6. CONCLUSION — Your evidence-based recommendation
+
+Depth level: Expert. Avoid oversimplification.`,
+    tags: ["Claude", "GPT-4"],
+    models: "Claude · GPT-4"
+  },
+  {
+    id: 5,
+    name: "Social Media Caption Master",
+    icon: "📱",
+    category: "creative",
+    catLabel: "Creative",
+    catColor: "rgba(255,77,143,0.15)",
+    catTextColor: "#ff4d8f",
+    accentColor: "#ff4d8f",
+    desc: "Creates viral captions for Instagram, LinkedIn, Twitter optimized for engagement.",
+    prompt: `You are a viral social media expert. Create 5 different caption variations for [PLATFORM] about:
+
+Topic/Product: [DESCRIBE IT]
+Brand Tone: [PROFESSIONAL/FUN/INSPIRATIONAL/EDGY]
+Target Audience: [WHO WILL SEE THIS]
+Goal: [LIKES/SHARES/CLICKS/SALES]
+
+For each caption provide:
+- The caption text (with emojis)
+- Relevant hashtags (platform-optimized)
+- Best posting time
+- Why this version will perform well`,
+    tags: ["Claude", "ChatGPT"],
+    models: "Claude · ChatGPT"
+  },
+  {
+    id: 6,
+    name: "Email Outreach Machine",
+    icon: "📧",
+    category: "business",
+    catLabel: "Business",
+    catColor: "rgba(200,241,53,0.15)",
+    catTextColor: "#c8f135",
+    accentColor: "#c8f135",
+    desc: "Writes cold emails and follow-ups that actually get replies. High conversion rate focused.",
+    prompt: `You are an email copywriting expert with a 40%+ reply rate. Write a cold outreach email:
+
+Sender: [YOUR NAME/COMPANY]
+Recipient: [WHO YOU'RE EMAILING - their role/company]
+Goal: [WHAT YOU WANT - meeting/sale/collaboration]
+Value Prop: [WHAT YOU OFFER THEM]
+
+Rules:
+- Subject line must be <50 characters and curiosity-driven
+- Email body max 120 words
+- ONE clear CTA only
+- Personal, not salesy
+- Include a specific compliment about their work
+
+Also write: 1 follow-up email for 3 days later`,
+    tags: ["Claude", "ChatGPT"],
+    models: "Claude · ChatGPT"
+  }
+];
+
+// ============================================
+//  RENDER PROJECTS
+// ============================================
+let currentProjectFilter = 'all';
+
+function renderProjects() {
+  const grid = document.getElementById('projectsGrid');
+  const filtered = currentProjectFilter === 'all'
+    ? PROJECTS
+    : PROJECTS.filter(p => p.tags.includes(currentProjectFilter));
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="project-card" data-tags="${p.tags.join(' ')}">
+      <div class="project-thumb" style="background:${p.bg};">
+        <span style="position:relative;z-index:1;">${p.emoji}</span>
+      </div>
+      <div class="project-body">
+        <div class="project-tags">
+          ${p.tagLabels.map(t => `<span class="tag ${t.cls}">${t.text}</span>`).join('')}
+        </div>
+        <div class="project-name">${p.name}</div>
+        <div class="project-desc">${p.desc}</div>
+        <div class="project-actions">
+          <a href="${p.liveUrl}" target="_blank" class="btn-sm btn-launch">🚀 Launch</a>
+          <button class="btn-sm btn-details" onclick="openModal(${p.id})">📖 Details</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Update count
+  animateCount('countProjects', PROJECTS.length);
+}
+
+function filterProjects(cat, btn) {
+  currentProjectFilter = cat;
+  document.querySelectorAll('.projects-filter .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProjects();
+}
+
+// ============================================
+//  PROJECT MODAL
+// ============================================
+function openModal(id) {
+  const p = PROJECTS.find(x => x.id === id);
+  if (!p) return;
+
+  document.getElementById('modalTags').innerHTML = p.tagLabels.map(t => `<span class="tag ${t.cls}">${t.text}</span>`).join('');
+  document.getElementById('modalThumb').style.background = p.bg;
+  document.getElementById('modalThumb').innerHTML = `<span style="font-size:5rem;">${p.emoji}</span>`;
+  document.getElementById('modalTitle').textContent = p.name;
+  document.getElementById('modalSubtitle').textContent = p.desc;
+  document.getElementById('modalAudience').textContent = p.audience;
+
+  document.getElementById('modalSteps').innerHTML = p.steps.map((s, i) => `
+    <div class="step">
+      <div class="step-num">${i + 1}</div>
+      <div class="step-text"><strong>${s.title}</strong><br>${s.detail}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('modalTech').innerHTML = p.tech.map(t => `<span class="tech-pill">${t}</span>`).join('');
+
+  document.getElementById('modalActions').innerHTML = `
+    <a href="${p.liveUrl}" target="_blank" class="btn btn-lime">🚀 Launch Project</a>
+    ${p.githubUrl !== '#' ? `<a href="${p.githubUrl}" target="_blank" class="btn btn-ghost">🐙 GitHub</a>` : ''}
+  `;
+
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ============================================
+//  RENDER PROMPTS
+// ============================================
+let currentPromptFilter = 'all';
+let currentSearch = '';
+
+function renderPrompts() {
+  const grid = document.getElementById('promptsGrid');
+  let filtered = PROMPTS;
+
+  if (currentPromptFilter !== 'all') {
+    filtered = filtered.filter(p => p.category === currentPromptFilter);
+  }
+
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    filtered = filtered.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.desc.toLowerCase().includes(q) ||
+      p.prompt.toLowerCase().includes(q)
+    );
+  }
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--muted); padding:60px 20px;">
+      <div style="font-size:3rem; margin-bottom:16px;">🔍</div>
+      <div>No prompts found. Try a different search.</div>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="prompt-card" style="--pc-color:${p.accentColor};">
+      <div class="prompt-header">
+        <span class="prompt-icon">${p.icon}</span>
+        <span class="prompt-cat" style="background:${p.catColor}; color:${p.catTextColor};">${p.catLabel}</span>
+      </div>
+      <div class="prompt-name">${p.name}</div>
+      <div class="prompt-desc">${p.desc}</div>
+      <div class="prompt-text-box">${escapeHtml(p.prompt)}</div>
+      <div class="prompt-footer">
+        <div class="prompt-meta">
+          ${p.tags.map(t => `<span class="meta-tag">${t}</span>`).join('')}
+        </div>
+        <button class="copy-btn" onclick="copyPrompt(${p.id}, this)">📋 Copy</button>
+      </div>
+    </div>
+  `).join('');
+
+  animateCount('countPrompts', PROMPTS.length);
+}
+
+function filterPrompts(cat, btn) {
+  currentPromptFilter = cat;
+  document.querySelectorAll('#prompts .cat-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPrompts();
+}
+
+function searchPrompts() {
+  currentSearch = document.getElementById('prompt-search').value;
+  renderPrompts();
+}
+
+function copyPrompt(id, btn) {
+  const p = PROMPTS.find(x => x.id === id);
+  if (!p) return;
+  navigator.clipboard.writeText(p.prompt).then(() => {
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2500);
+  });
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ============================================
+//  NAVIGATION
+// ============================================
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// Active nav on scroll
+window.addEventListener('scroll', () => {
+  const sections = ['home','projects','prompts','about'];
+  const scrollY = window.scrollY + 100;
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.offsetTop <= scrollY && el.offsetTop + el.offsetHeight > scrollY) {
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      const activeLink = document.querySelector(`.nav-links a[href="#${id}"]`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+  });
+});
+
+// ============================================
+//  SCROLL REVEAL
+// ============================================
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ============================================
+//  CUSTOM CURSOR
+// ============================================
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx - 6 + 'px';
+  cursor.style.top = my - 6 + 'px';
+});
+
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx - 18 + 'px';
+  ring.style.top = ry - 18 + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'scale(2.5)';
+    ring.style.transform = 'scale(1.5)';
+    ring.style.opacity = '0.3';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'scale(1)';
+    ring.style.transform = 'scale(1)';
+    ring.style.opacity = '0.5';
+  });
+});
+
+// ============================================
+//  ANIMATED COUNTER
+// ============================================
+function animateCount(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let current = 0;
+  const step = Math.ceil(target / 30);
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current;
+    if (current >= target) clearInterval(timer);
+  }, 40);
+}
+
+// ============================================
+//  INIT
+// ============================================
+renderProjects();
+renderPrompts();
+
+setTimeout(() => {
+  animateCount('countProjects', PROJECTS.length);
+  animateCount('countPrompts', PROMPTS.length);
+}, 600);
+
+
+// ============================================
+//  ADMIN PANEL JAVASCRIPT
+// ============================================
+
+const ADMIN_PASSWORD = 'admin123'; // Change this!
+
+// Load saved data from localStorage or use defaults
+function loadData() {
+  const saved = localStorage.getItem('portfolioData');
+  if (saved) {
+    const data = JSON.parse(saved);
+    if (data.projects) PROJECTS.splice(0, PROJECTS.length, ...data.projects);
+    if (data.prompts) PROMPTS.splice(0, PROMPTS.length, ...data.prompts);
+  }
+}
+
+function saveData() {
+  localStorage.setItem('portfolioData', JSON.stringify({
+    projects: PROJECTS,
+    prompts: PROMPTS
+  }));
+}
+
+// ── ADMIN OPEN / CLOSE ──
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  document.getElementById('adminLogin').style.display = 'flex';
+  document.getElementById('adminDash').style.display = 'none';
+  document.getElementById('adminPass').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function checkPass() {
+  const val = document.getElementById('adminPass').value;
+  const savedPass = localStorage.getItem('adminPassword') || ADMIN_PASSWORD;
+  if (val === savedPass) {
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminDash').style.display = 'block';
+    renderAdminProjects();
+    renderAdminPrompts();
+    loadSettings();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('adminPass').value = '';
+    document.getElementById('adminPass').focus();
+  }
+}
+
+// ── TABS ──
+function switchAdminTab(tab, btn) {
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('adminProjects').style.display = tab === 'projects' ? 'block' : 'none';
+  document.getElementById('adminPrompts').style.display  = tab === 'prompts'  ? 'block' : 'none';
+  document.getElementById('adminSettings').style.display = tab === 'settings' ? 'block' : 'none';
+}
+
+// ── RENDER ADMIN LISTS ──
+function renderAdminProjects() {
+  const list = document.getElementById('adminProjectsList');
+  if (PROJECTS.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px;font-family:var(--font-mono);font-size:12px;">No projects yet. Add your first one!</div>';
+    return;
+  }
+  list.innerHTML = PROJECTS.map((p, i) => `
+    <div class="admin-item">
+      <div class="admin-item-icon">${p.emoji}</div>
+      <div class="admin-item-info">
+        <div class="admin-item-name">${p.name}</div>
+        <div class="admin-item-desc">${p.desc}</div>
+        <div style="margin-top:6px;font-size:10px;color:var(--muted2);font-family:var(--font-mono);">
+          ${p.liveUrl !== '#' ? '🔗 ' + p.liveUrl : '⚠️ No live URL set'}
+        </div>
+      </div>
+      <div class="admin-item-actions">
+        <button class="btn-edit" onclick="editProject(${i})">✏️ EDIT</button>
+        <button class="btn-del" onclick="askDelete('project',${i})">🗑️ DEL</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAdminPrompts() {
+  const list = document.getElementById('adminPromptsList');
+  if (PROMPTS.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px;font-family:var(--font-mono);font-size:12px;">No prompts yet. Add your first one!</div>';
+    return;
+  }
+  list.innerHTML = PROMPTS.map((p, i) => `
+    <div class="admin-item">
+      <div class="admin-item-icon">${p.icon}</div>
+      <div class="admin-item-info">
+        <div class="admin-item-name">${p.name}</div>
+        <div class="admin-item-desc">${p.desc}</div>
+        <div style="margin-top:6px;font-size:10px;color:var(--muted2);font-family:var(--font-mono);">
+          ${p.catLabel} · ${p.models || 'Claude, ChatGPT'}
+        </div>
+      </div>
+      <div class="admin-item-actions">
+        <button class="btn-edit" onclick="editPrompt(${i})">✏️ EDIT</button>
+        <button class="btn-del" onclick="askDelete('prompt',${i})">🗑️ DEL</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── PROJECT FORM ──
+function openProjectForm(editIdx = -1) {
+  clearProjectForm();
+  document.getElementById('projectEditId').value = editIdx;
+  document.getElementById('projectFormTitle').textContent = editIdx >= 0 ? 'EDIT PROJECT' : 'ADD PROJECT';
+  document.getElementById('projectFormOverlay').classList.add('open');
+}
+
+function editProject(i) {
+  const p = PROJECTS[i];
+  document.getElementById('fProjName').value = p.name;
+  document.getElementById('fProjDesc').value = p.desc;
+  document.getElementById('fProjEmoji').value = p.emoji;
+  document.getElementById('fProjCat').value = p.tags[0] || 'ai';
+  document.getElementById('fProjUrl').value = p.liveUrl !== '#' ? p.liveUrl : '';
+  document.getElementById('fProjGithub').value = p.githubUrl !== '#' ? p.githubUrl : '';
+  document.getElementById('fProjAudience').value = p.audience || '';
+  document.getElementById('fProjTech').value = (p.tech || []).join(', ');
+  document.getElementById('fProjSteps').value = (p.steps || []).map(s => s.title + ': ' + s.detail.replace(/<[^>]+>/g,'')).join('\n');
+  openProjectForm(i);
+}
+
+function closeProjectForm() {
+  document.getElementById('projectFormOverlay').classList.remove('open');
+}
+
+function clearProjectForm() {
+  ['fProjName','fProjDesc','fProjEmoji','fProjUrl','fProjGithub','fProjAudience','fProjTech','fProjSteps'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('fProjImgPreview').style.display = 'none';
+}
+
+function saveProject() {
+  const name = document.getElementById('fProjName').value.trim();
+  const desc = document.getElementById('fProjDesc').value.trim();
+  if (!name || !desc) { showToast('❌ Name and description required!'); return; }
+
+  const cat = document.getElementById('fProjCat').value;
+  const catMap = {
+    ai: [{ text: 'AI Tool', cls: 'tag-ai' }],
+    tool: [{ text: 'Utility', cls: 'tag-tool' }],
+    design: [{ text: 'Design', cls: 'tag-design' }]
+  };
+  const bgMap = {
+    ai: 'linear-gradient(135deg,#1a1a0a 0%,#0a0a1a 100%)',
+    tool: 'linear-gradient(135deg,#0a1020 0%,#0a0a1a 100%)',
+    design: 'linear-gradient(135deg,#1a0a0a 0%,#0a1020 100%)'
+  };
+
+  const tech = document.getElementById('fProjTech').value.split(',').map(t => t.trim()).filter(Boolean);
+  const stepsRaw = document.getElementById('fProjSteps').value.split('\n').filter(s => s.trim());
+  const steps = stepsRaw.map(s => {
+    const parts = s.split(':');
+    return { title: parts[0]?.trim() || s, detail: parts.slice(1).join(':').trim() || s };
+  });
+
+  const newProject = {
+    id: Date.now(),
+    name,
+    desc,
+    emoji: document.getElementById('fProjEmoji').value || '🚀',
+    bg: bgMap[cat],
+    tags: [cat],
+    tagLabels: catMap[cat],
+    liveUrl: document.getElementById('fProjUrl').value.trim() || '#',
+    githubUrl: document.getElementById('fProjGithub').value.trim() || '#',
+    audience: document.getElementById('fProjAudience').value.trim() || 'General users',
+    tech: tech.length ? tech : ['HTML', 'CSS', 'JavaScript'],
+    steps: steps.length ? steps : [{ title: 'Open', detail: 'Launch the project.' }]
+  };
+
+  const editIdx = parseInt(document.getElementById('projectEditId').value);
+  if (editIdx >= 0) {
+    PROJECTS[editIdx] = { ...PROJECTS[editIdx], ...newProject };
+    showToast('✅ Project updated!');
+  } else {
+    PROJECTS.push(newProject);
+    showToast('✅ Project added!');
+  }
+
+  saveData();
+  renderProjects();
+  renderAdminProjects();
+  closeProjectForm();
+}
+
+// ── PROMPT FORM ──
+function openPromptForm(editIdx = -1) {
+  clearPromptForm();
+  document.getElementById('promptEditId').value = editIdx;
+  document.getElementById('promptFormTitle').textContent = editIdx >= 0 ? 'EDIT PROMPT' : 'ADD PROMPT';
+  document.getElementById('promptFormOverlay').classList.add('open');
+}
+
+function editPrompt(i) {
+  const p = PROMPTS[i];
+  document.getElementById('fPromptName').value = p.name;
+  document.getElementById('fPromptDesc').value = p.desc;
+  document.getElementById('fPromptIcon').value = p.icon;
+  document.getElementById('fPromptCat').value = p.category;
+  document.getElementById('fPromptModels').value = p.models || (p.tags || []).join(', ');
+  document.getElementById('fPromptText').value = p.prompt;
+  openPromptForm(i);
+}
+
+function closePromptForm() {
+  document.getElementById('promptFormOverlay').classList.remove('open');
+}
+
+function clearPromptForm() {
+  ['fPromptName','fPromptDesc','fPromptIcon','fPromptModels','fPromptText'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+function savePrompt() {
+  const name = document.getElementById('fPromptName').value.trim();
+  const desc = document.getElementById('fPromptDesc').value.trim();
+  const prompt = document.getElementById('fPromptText').value.trim();
+  if (!name || !desc || !prompt) { showToast('❌ Name, description and prompt required!'); return; }
+
+  const cat = document.getElementById('fPromptCat').value;
+  const catConfig = {
+    creative:  { label: 'Creative',  color: 'rgba(255,77,143,0.15)', textColor: '#ff4d8f', accent: '#ff4d8f' },
+    technical: { label: 'Technical', color: 'rgba(77,159,255,0.15)', textColor: '#4d9fff', accent: '#4d9fff' },
+    business:  { label: 'Business',  color: 'rgba(200,241,53,0.15)', textColor: '#c8f135', accent: '#c8f135' },
+    analysis:  { label: 'Analysis',  color: 'rgba(0,212,170,0.15)',  textColor: '#00d4aa', accent: '#00d4aa' },
+  };
+  const cfg = catConfig[cat];
+  const modelsRaw = document.getElementById('fPromptModels').value;
+  const tags = modelsRaw.split(',').map(t => t.trim()).filter(Boolean);
+
+  const newPrompt = {
+    id: Date.now(),
+    name, desc, prompt,
+    icon: document.getElementById('fPromptIcon').value || '💡',
+    category: cat,
+    catLabel: cfg.label,
+    catColor: cfg.color,
+    catTextColor: cfg.textColor,
+    accentColor: cfg.accent,
+    tags: tags.length ? tags : ['Claude'],
+    models: modelsRaw || 'Claude'
+  };
+
+  const editIdx = parseInt(document.getElementById('promptEditId').value);
+  if (editIdx >= 0) {
+    PROMPTS[editIdx] = { ...PROMPTS[editIdx], ...newPrompt };
+    showToast('✅ Prompt updated!');
+  } else {
+    PROMPTS.push(newPrompt);
+    showToast('✅ Prompt added!');
+  }
+
+  saveData();
+  renderPrompts();
+  renderAdminPrompts();
+  closePromptForm();
+}
+
+// ── DELETE ──
+let deleteTarget = null;
+
+function askDelete(type, idx) {
+  deleteTarget = { type, idx };
+  const name = type === 'project' ? PROJECTS[idx].name : PROMPTS[idx].name;
+  document.getElementById('confirmMsg').textContent = `"${name}" permanently delete ho jayega. Sure ho?`;
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+
+function closeConfirm() {
+  document.getElementById('confirmOverlay').classList.remove('open');
+  deleteTarget = null;
+}
+
+function confirmDelete() {
+  if (!deleteTarget) return;
+  const { type, idx } = deleteTarget;
+  if (type === 'project') {
+    PROJECTS.splice(idx, 1);
+    renderProjects();
+    renderAdminProjects();
+    showToast('🗑️ Project deleted!');
+  } else {
+    PROMPTS.splice(idx, 1);
+    renderPrompts();
+    renderAdminPrompts();
+    showToast('🗑️ Prompt deleted!');
+  }
+  saveData();
+  closeConfirm();
+}
+
+// ── SETTINGS ──
+function loadSettings() {
+  const s = JSON.parse(localStorage.getItem('siteSettings') || '{}');
+  document.getElementById('settingName').value = s.name || '';
+  document.getElementById('settingTagline').value = s.tagline || '';
+  document.getElementById('settingEmail').value = s.email || '';
+  document.getElementById('settingGithub').value = s.github || '';
+  document.getElementById('settingLinkedin').value = s.linkedin || '';
+}
+
+function saveSettings() {
+  const settings = {
+    name: document.getElementById('settingName').value,
+    tagline: document.getElementById('settingTagline').value,
+    email: document.getElementById('settingEmail').value,
+    github: document.getElementById('settingGithub').value,
+    linkedin: document.getElementById('settingLinkedin').value,
+  };
+  localStorage.setItem('siteSettings', JSON.stringify(settings));
+  const newPass = document.getElementById('settingPass').value;
+  if (newPass) localStorage.setItem('adminPassword', newPass);
+
+  // Apply settings to page
+  if (settings.email) {
+    document.querySelectorAll('a[href^="mailto:"]').forEach(a => a.href = 'mailto:' + settings.email);
+  }
+  if (settings.github) {
+    document.querySelectorAll('a[href*="github.com"]').forEach(a => a.href = settings.github);
+  }
+  if (settings.linkedin) {
+    document.querySelectorAll('a[href*="linkedin.com"]').forEach(a => a.href = settings.linkedin);
+  }
+  showToast('✅ Settings saved!');
+}
+
+// ── IMAGE PREVIEW ──
+function previewImg(input, previewId) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(previewId);
+    img.src = e.target.result;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Load saved data on init
+loadData();
+
+</script>
+
+
+<!-- ===== ADMIN PANEL ===== -->
+<div class="admin-overlay" id="adminOverlay">
+
+  <!-- LOGIN SCREEN -->
+  <div class="admin-login" id="adminLogin">
+    <div class="login-box">
+      <div class="login-logo">⚙ ADMIN</div>
+      <div class="login-sub">// Secure Access Only</div>
+      <input type="password" class="login-input" id="adminPass"
+             placeholder="Enter Password"
+             onkeydown="if(event.key==='Enter') checkPass()">
+      <button class="login-btn" onclick="checkPass()">ENTER DASHBOARD</button>
+      <div class="login-err" id="loginErr">❌ Wrong password. Try again.</div>
+      <div style="margin-top:20px;font-size:11px;color:var(--muted2);font-family:var(--font-mono);">
+        Default: admin123 (change in code)
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="admin-wrap" id="adminDash" style="display:none;">
+    <div class="admin-header">
+      <div>
+        <div class="admin-title">DASHBOARD</div>
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:4px;">
+          // Manage your portfolio content
+        </div>
+      </div>
+      <button class="admin-close-btn" onclick="closeAdmin()">✕ CLOSE PANEL</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchAdminTab('projects',this)">🚀 Projects</button>
+      <button class="admin-tab" onclick="switchAdminTab('prompts',this)">📚 Prompts</button>
+      <button class="admin-tab" onclick="switchAdminTab('settings',this)">⚙ Settings</button>
+    </div>
+
+    <!-- PROJECTS TAB -->
+    <div id="adminProjects">
+      <div class="admin-list" id="adminProjectsList"></div>
+      <button class="btn-add-new" onclick="openProjectForm()">+ ADD NEW PROJECT</button>
+    </div>
+
+    <!-- PROMPTS TAB -->
+    <div id="adminPrompts" style="display:none;">
+      <div class="admin-list" id="adminPromptsList"></div>
+      <button class="btn-add-new" onclick="openPromptForm()">+ ADD NEW PROMPT</button>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div id="adminSettings" style="display:none;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;">
+        <div style="font-family:var(--font-display);font-size:1.2rem;letter-spacing:2px;color:var(--lime);margin-bottom:20px;">SITE SETTINGS</div>
+        <div class="form-group">
+          <label class="form-label">Your Name / Portfolio Title</label>
+          <input type="text" class="form-input" id="settingName" placeholder="My Portfolio">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Hero Tagline</label>
+          <input type="text" class="form-input" id="settingTagline" placeholder="I build AI-powered tools...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Email</label>
+          <input type="email" class="form-input" id="settingEmail" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">GitHub URL</label>
+          <input type="text" class="form-input" id="settingGithub" placeholder="https://github.com/yourusername">
+        </div>
+        <div class="form-group">
+          <label class="form-label">LinkedIn URL</label>
+          <input type="text" class="form-input" id="settingLinkedin" placeholder="https://linkedin.com/in/yourprofile">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Change Admin Password</label>
+          <input type="password" class="form-input" id="settingPass" placeholder="New password...">
+        </div>
+        <button class="btn-save" onclick="saveSettings()" style="width:100%;margin-top:8px;">SAVE SETTINGS</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT FORM MODAL -->
+<div class="form-overlay" id="projectFormOverlay">
+  <div class="form-box">
+    <div class="form-title" id="projectFormTitle">ADD PROJECT</div>
+    <input type="hidden" id="projectEditId">
+
+    <div class="form-group">
+      <label class="form-label">Project Name *</label>
+      <input type="text" class="form-input" id="fProjName" placeholder="e.g. PromptForge">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Short Description *</label>
+      <input type="text" class="form-input" id="fProjDesc" placeholder="What does this project do?">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Emoji Icon</label>
+        <input type="text" class="form-input" id="fProjEmoji" placeholder="⚡" maxlength="4">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" id="fProjCat">
+          <option value="ai">🤖 AI Tool</option>
+          <option value="tool">🔧 Utility</option>
+          <option value="design">🎨 Design</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Live URL (website link)</label>
+      <input type="text" class="form-input" id="fProjUrl" placeholder="https://yourproject.netlify.app">
+    </div>
+    <div class="form-group">
+      <label class="form-label">GitHub URL (optional)</label>
+      <input type="text" class="form-input" id="fProjGithub" placeholder="https://github.com/you/project">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Target Audience</label>
+      <input type="text" class="form-input" id="fProjAudience" placeholder="Who is this for?">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tech Stack (comma separated)</label>
+      <input type="text" class="form-input" id="fProjTech" placeholder="HTML, CSS, JavaScript, Claude API">
+    </div>
+    <div class="form-group">
+      <label class="form-label">How To Use Steps (one per line)</label>
+      <textarea class="form-textarea" id="fProjSteps" placeholder="Open the tool&#10;Enter your prompt&#10;Click the button&#10;Copy the result"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Thumbnail Image (optional)</label>
+      <div class="img-upload-area" onclick="document.getElementById('fProjImg').click()">
+        <input type="file" id="fProjImg" accept="image/*" onchange="previewImg(this,'fProjImgPreview')">
+        <div style="color:var(--muted);font-size:13px;">📁 Click to upload image</div>
+        <div style="color:var(--muted2);font-size:11px;margin-top:4px;">PNG, JPG, WebP supported</div>
+        <img id="fProjImgPreview" class="img-preview">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-save" onclick="saveProject()">SAVE PROJECT</button>
+      <button class="btn-cancel" onclick="closeProjectForm()">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROMPT FORM MODAL -->
+<div class="form-overlay" id="promptFormOverlay">
+  <div class="form-box">
+    <div class="form-title" id="promptFormTitle">ADD PROMPT</div>
+    <input type="hidden" id="promptEditId">
+
+    <div class="form-group">
+      <label class="form-label">Prompt Name *</label>
+      <input type="text" class="form-input" id="fPromptName" placeholder="e.g. Ultimate Content Writer">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Short Description *</label>
+      <input type="text" class="form-input" id="fPromptDesc" placeholder="What does this prompt do?">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Icon Emoji</label>
+        <input type="text" class="form-input" id="fPromptIcon" placeholder="✍️" maxlength="4">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" id="fPromptCat">
+          <option value="creative">✍️ Creative</option>
+          <option value="technical">💻 Technical</option>
+          <option value="business">📈 Business</option>
+          <option value="analysis">🔍 Analysis</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">AI Model Compatibility</label>
+      <input type="text" class="form-input" id="fPromptModels" placeholder="Claude, ChatGPT, GPT-4">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Full Prompt Text *</label>
+      <textarea class="form-textarea" id="fPromptText" style="min-height:160px;"
+                placeholder="You are an expert... Write a [TOPIC] for [AUDIENCE]..."></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn-save" onclick="savePrompt()">SAVE PROMPT</button>
+      <button class="btn-cancel" onclick="closePromptForm()">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">DELETE?</div>
+    <div class="confirm-msg" id="confirmMsg">Are you sure? This cannot be undone.</div>
+    <div class="confirm-btns">
+      <button class="btn-confi
